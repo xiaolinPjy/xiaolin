@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码生成器</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 页面主体样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        /* 主卡片容器 */
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* 表单组样式 */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #555;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        /* 滑块容器 */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* 滑块样式 */
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #764ba2;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            background: #764ba2;
+        }
+
+        /* 长度显示 */
+        .length-display {
+            min-width: 50px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* 复选框组 */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* 密码显示区域 */
+        .password-display {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            word-break: break-all;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            color: #333;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 按钮组 */
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* 按钮样式 */
+        button {
+            flex: 1;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .btn-copy {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-copy:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-copy:active {
+            background: #d0d0d0;
+        }
+
+        .btn-copy.copied {
+            background: #4caf50;
+            color: white;
+        }
+
+        /* 错误提示 */
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .password-display {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>密码生成器</h1>
+
+        <!-- 密码长度设置 -->
+        <div class="form-group">
+            <label for="lengthSlider">密码长度: <span id="lengthValue" class="length-display">16</span> 位</label>
+            <div class="slider-container">
+                <input type="range" id="lengthSlider" min="6" max="32" value="16">
+            </div>
+        </div>
+
+        <!-- 字符类型选择 -->
+        <div class="form-group">
+            <label>字符类型:</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="uppercase" checked>
+                    <label for="uppercase">大写字母 (A-Z)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lowercase" checked>
+                    <label for="lowercase">小写字母 (a-z)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="numbers" checked>
+                    <label for="numbers">数字 (0-9)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="symbols" checked>
+                    <label for="symbols">符号 (!@#$%^&*()_+-=[]{};:,.<>?)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="excludeConfusing">
+                    <label for="excludeConfusing">排除易混淆字符 (il1Lo0O)</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 错误提示 -->
+        <div class="error-message" id="errorMessage">请至少选择一种字符类型</div>
+
+        <!-- 密码显示区 -->
+        <div class="password-display" id="passwordDisplay">点击生成密码</div>
+
+        <!-- 按钮组 -->
+        <div class="button-group">
+            <button class="btn-generate" id="generateBtn">生成密码</button>
+            <button class="btn-copy" id="copyBtn">复制密码</button>
+        </div>
+    </div>
+
+    <script>
+        // 字符池定义
+        const CHAR_SETS = {
+            uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            lowercase: 'abcdefghijklmnopqrstuvwxyz',
+            numbers: '0123456789',
+            symbols: '!@#$%^&*()_+-=[]{};:,.<>?'
+        };
+
+        // 易混淆字符
+        const CONFUSING_CHARS = 'il1Lo0O';
+
+        // DOM 元素
+        const lengthSlider = document.getElementById('lengthSlider');
+        const lengthValue = document.getElementById('lengthValue');
+        const uppercaseCheckbox = document.getElementById('uppercase');
+        const lowercaseCheckbox = document.getElementById('lowercase');
+        const numbersCheckbox = document.getElementById('numbers');
+        const symbolsCheckbox = document.getElementById('symbols');
+        const excludeConfusingCheckbox = document.getElementById('excludeConfusing');
+        const passwordDisplay = document.getElementById('passwordDisplay');
+        const generateBtn = document.getElementById('generateBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // 更新长度显示
+        lengthSlider.addEventListener('input', () => {
+            lengthValue.textContent = lengthSlider.value;
+        });
+
+        // 生成密码
+        function generatePassword() {
+            const length = parseInt(lengthSlider.value);
+            const excludeConfusing = excludeConfusingCheckbox.checked;
+
+            // 构建字符池
+            let charPool = '';
+            let selectedChars = [];
+
+            if (uppercaseCheckbox.checked) {
+                let chars = CHAR_SETS.uppercase;
+                if (excludeConfusing) {
+                    chars = chars.split('').filter(c => !CONFUSING_CHARS.includes(c)).join('');
+                }
+                charPool += chars;
+                selectedChars.push(chars);
+            }
+
+            if (lowercaseCheckbox.checked) {
+                let chars = CHAR_SETS.lowercase;
+                if (excludeConfusing) {
+                    chars = chars.split('').filter(c => !CONFUSING_CHARS.includes(c)).join('');
+                }
+                charPool += chars;
+                selectedChars.push(chars);
+            }
+
+            if (numbersCheckbox.checked) {
+                let chars = CHAR_SETS.numbers;
+                if (excludeConfusing) {
+                    chars = chars.split('').filter(c => !CONFUSING_CHARS.includes(c)).join('');
+                }
+                charPool += chars;
+                selectedChars.push(chars);
+            }
+
+            if (symbolsCheckbox.checked) {
+                charPool += CHAR_SETS.symbols;
+                selectedChars.push(CHAR_SETS.symbols);
+            }
+
+            // 检查是否选择了至少一种字符类型
+            if (selectedChars.length === 0) {
+                errorMessage.classList.add('show');
+                passwordDisplay.textContent = '请至少选择一种字符类型';
+                return;
+            }
+
+            errorMessage.classList.remove('show');
+
+            // 生成密码
+            let password = '';
+
+            // 确保每种选择的类型至少出现一次
+            selectedChars.forEach(chars => {
+                if (password.length < length) {
+                    password += chars[Math.floor(Math.random() * chars.length)];
+                }
+            });
+
+            // 填充剩余长度
+            while (password.length < length) {
+                password += charPool[Math.floor(Math.random() * charPool.length)];
+            }
+
+            // 打乱密码
+            password = password.split('').sort(() => Math.random() - 0.5).join('');
+
+            passwordDisplay.textContent = password;
+        }
+
+        // 复制密码
+        function copyPassword() {
+            const password = passwordDisplay.textContent;
+            
+            if (password === '点击生成密码' || password === '请至少选择一种字符类型') {
+                return;
+            }
+
+            navigator.clipboard.writeText(password).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '已复制';
+                copyBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        }
+
+        // 事件绑定
+        generateBtn.addEventListener('click', generatePassword);
+        copyBtn.addEventListener('click', copyPassword);
+
+        // 页面加载时生成一个密码
+        generatePassword();
+    </script>
+</body>
+</html>

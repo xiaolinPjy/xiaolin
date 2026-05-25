@@ -49,16 +49,6 @@
             animation: crystalFloat 10s ease-in-out infinite;
             z-index: 1;
         }
-        .crystal-decoration::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        }
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
             50% { transform: translate(20px, -20px) scale(1.1); }
@@ -66,14 +56,6 @@
         @keyframes crystalFloat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes countUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .workbench-container {
             max-width: 900px;
@@ -106,22 +88,6 @@
             gap: 8px;
         }
         .nav-tab svg { width: 20px; height: 20px; }
-        .nav-tab::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-        .nav-tab:hover::before {
-            width: 300px;
-            height: 300px;
-        }
         .nav-tab:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -137,16 +103,15 @@
             box-shadow: 0 25px 80px rgba(0,0,0,0.2);
             padding: 40px;
             min-height: 500px;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-            transform-style: preserve-3d;
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
         .tool-content.fade-out {
             opacity: 0;
-            transform: rotateY(-15deg) translateX(-20px);
+            transform: translateX(-20px);
         }
         .tool-content.fade-in {
             opacity: 1;
-            transform: rotateY(0) translateX(0);
+            transform: translateX(0);
         }
         h1 {
             text-align: center;
@@ -185,9 +150,7 @@
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea, #764ba2);
             cursor: pointer;
-            transition: transform 0.3s;
         }
-        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         .length-display {
             min-width: 50px;
             text-align: center;
@@ -230,13 +193,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-        }
-        .password-display:hover { border-color: #667eea; }
-        .button-group {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
         }
         button {
             flex: 1;
@@ -248,8 +204,6 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
         .btn-primary {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -259,7 +213,6 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(102,126,234,0.4);
         }
-        .btn-primary:active { transform: translateY(0); }
         .btn-secondary {
             background: #f0f0f0;
             color: #333;
@@ -268,34 +221,11 @@
             background: #e0e0e0;
             transform: translateY(-2px);
         }
-        .btn-success {
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(76,175,80,0.4);
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #f44336, #da190b);
-            color: white;
-        }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(244,67,54,0.4);
-        }
-        .btn-copied {
-            background: #4caf50 !important;
-        }
-        .error-message {
-            color: #e74c3c;
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: 500;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-        .error-message.show { display: block; }
         .toast {
             position: fixed;
             bottom: 30px;
@@ -309,7 +239,6 @@
             opacity: 0;
             transition: all 0.3s ease;
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
         .toast.show {
             opacity: 1;
@@ -329,25 +258,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            word-break: break-all;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
         }
-        .calculator-history {
-            background: #f5f5f5;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-        .calculator-history-item {
-            padding: 8px 12px;
-            border-bottom: 1px solid #e0e0e0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            color: #666;
-        }
-        .calculator-history-item:last-child { border-bottom: none; }
         .calculator-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -368,19 +279,9 @@
             background: #e0e0e0;
             transform: scale(1.05);
         }
-        .calc-btn:active {
-            transform: scale(0.95);
-        }
         .calc-btn.operator {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-        }
-        .calc-btn.operator:hover {
-            background: linear-gradient(135deg, #7c8eea, #865ba2);
-        }
-        .calc-btn.clear {
-            background: #f0f0f0;
-            color: #999;
         }
         .calc-btn.equals {
             background: linear-gradient(135deg, #4caf50, #45a049);
@@ -402,7 +303,6 @@
             border-radius: 12px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.3s;
         }
         .todo-input:focus { border-color: #667eea; }
         .todo-list {
@@ -420,7 +320,6 @@
             border-radius: 12px;
             margin-bottom: 10px;
             transition: all 0.3s;
-            animation: slideIn 0.3s ease;
         }
         .todo-item:hover {
             background: #f0f0f0;
@@ -451,11 +350,6 @@
             background: #ffebee;
             color: #e53935;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        .todo-delete:hover {
-            background: #ffcdd2;
-            transform: scale(1.1);
         }
         .todo-stats {
             display: grid;
@@ -469,14 +363,11 @@
             padding: 20px;
             border-radius: 16px;
             text-align: center;
-            transition: transform 0.3s;
         }
-        .stat-card:hover { transform: translateY(-5px); }
         .stat-value {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 5px;
-            animation: countUp 0.5s ease;
         }
         .stat-label { font-size: 14px; opacity: 0.9; }
         .chart-container {
@@ -493,7 +384,6 @@
                 #ff9800 var(--completed-deg, 0deg) 360deg
             );
             position: relative;
-            transition: all 0.5s ease;
         }
         .pie-chart::before {
             content: '';
@@ -518,7 +408,6 @@
             font-weight: bold;
             color: #667eea;
         }
-        .pie-label { font-size: 12px; color: #666; }
         .export-buttons {
             display: flex;
             gap: 10px;
@@ -530,10 +419,7 @@
             .tool-content { padding: 25px; }
             h1 { font-size: 24px; }
             .nav-tab { padding: 12px 20px; font-size: 14px; }
-            .calculator-buttons { grid-template-columns: repeat(4, 1fr); }
-            .calc-btn { padding: 15px; font-size: 18px; }
             .todo-stats { grid-template-columns: repeat(1, 1fr); }
-            .button-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -580,25 +466,12 @@
             <div class="form-group">
                 <label>字符类型:</label>
                 <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="uppercase" checked>
-                        <label for="uppercase">大写字母 (A-Z)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="lowercase" checked>
-                        <label for="lowercase">小写字母 (a-z)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="numbers" checked>
-                        <label for="numbers">数字 (0-9)</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="symbols" checked>
-                        <label for="symbols">符号 (!@#$%^&*())</label>
-                    </div>
+                    <div class="checkbox-item"><input type="checkbox" id="uppercase" checked><label for="uppercase">大写字母 (A-Z)</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="lowercase" checked><label for="lowercase">小写字母 (a-z)</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="numbers" checked><label for="numbers">数字 (0-9)</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="symbols" checked><label for="symbols">符号 (!@#$%^&*())</label></div>
                 </div>
             </div>
-            <div class="error-message" id="errorMessage">请至少选择一种字符类型</div>
             <div class="password-display" id="passwordDisplay">点击生成密码</div>
             <div class="button-group">
                 <button class="btn-primary" id="generateBtn">生成密码</button>
@@ -609,9 +482,8 @@
         <div class="tool-content" id="calculator-tool" style="display: none;">
             <h1>计算器</h1>
             <div class="calculator-display" id="calcDisplay">0</div>
-            <div class="calculator-history" id="calcHistory"></div>
             <div class="calculator-buttons">
-                <button class="calc-btn clear" onclick="calcClear()">C</button>
+                <button class="calc-btn" onclick="calcClear()">C</button>
                 <button class="calc-btn" onclick="calcAppend('(')">(</button>
                 <button class="calc-btn" onclick="calcAppend(')')">)</button>
                 <button class="calc-btn operator" onclick="calcAppend('/')">÷</button>
@@ -635,26 +507,14 @@
 
         <div class="tool-content" id="todo-tool" style="display: none;">
             <h1>待办事项</h1>
-            <div class="todo-stats" id="todoStats">
-                <div class="stat-card">
-                    <div class="stat-value" id="statTotal">0</div>
-                    <div class="stat-label">总任务</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statCompleted">0</div>
-                    <div class="stat-label">已完成</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statPending">0</div>
-                    <div class="stat-label">待处理</div>
-                </div>
+            <div class="todo-stats">
+                <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">总任务</div></div>
+                <div class="stat-card"><div class="stat-value" id="statCompleted">0</div><div class="stat-label">已完成</div></div>
+                <div class="stat-card"><div class="stat-value" id="statPending">0</div><div class="stat-label">待处理</div></div>
             </div>
             <div class="chart-container">
                 <div class="pie-chart" id="pieChart">
-                    <div class="pie-center">
-                        <div class="pie-percentage" id="piePercentage">0%</div>
-                        <div class="pie-label">完成率</div>
-                    </div>
+                    <div class="pie-center"><div class="pie-percentage" id="piePercentage">0%</div><div style="font-size:12px;color:#666">完成率</div></div>
                 </div>
             </div>
             <div class="todo-input-area">
@@ -672,12 +532,7 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        const CHAR_SETS = {
-            uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            lowercase: 'abcdefghijklmnopqrstuvwxyz',
-            numbers: '0123456789',
-            symbols: '!@#$%^&*()_+-=[]{};:,.<>?'
-        };
+        const CHAR_SETS = { uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', lowercase: 'abcdefghijklmnopqrstuvwxyz', numbers: '0123456789', symbols: '!@#$%^&*()_+-=[]{};:,.<>?' };
         const lengthSlider = document.getElementById('lengthSlider');
         const lengthValue = document.getElementById('lengthValue');
         const uppercaseCheckbox = document.getElementById('uppercase');
@@ -687,56 +542,25 @@
         const passwordDisplay = document.getElementById('passwordDisplay');
         const generateBtn = document.getElementById('generateBtn');
         const copyBtn = document.getElementById('copyBtn');
-        const errorMessage = document.getElementById('errorMessage');
         const toast = document.getElementById('toast');
         const navTabs = document.querySelectorAll('.nav-tab');
         const toolContents = document.querySelectorAll('.tool-content');
 
-        lengthSlider.addEventListener('input', () => {
-            lengthValue.textContent = lengthSlider.value;
-        });
+        lengthSlider.addEventListener('input', () => lengthValue.textContent = lengthSlider.value);
 
         function generatePassword() {
             const length = parseInt(lengthSlider.value);
             let charPool = '';
             let selectedChars = [];
+            if (uppercaseCheckbox.checked) { charPool += CHAR_SETS.uppercase; selectedChars.push(CHAR_SETS.uppercase); }
+            if (lowercaseCheckbox.checked) { charPool += CHAR_SETS.lowercase; selectedChars.push(CHAR_SETS.lowercase); }
+            if (numbersCheckbox.checked) { charPool += CHAR_SETS.numbers; selectedChars.push(CHAR_SETS.numbers); }
+            if (symbolsCheckbox.checked) { charPool += CHAR_SETS.symbols; selectedChars.push(CHAR_SETS.symbols); }
 
-            if (uppercaseCheckbox.checked) {
-                charPool += CHAR_SETS.uppercase;
-                selectedChars.push(CHAR_SETS.uppercase);
-            }
-            if (lowercaseCheckbox.checked) {
-                charPool += CHAR_SETS.lowercase;
-                selectedChars.push(CHAR_SETS.lowercase);
-            }
-            if (numbersCheckbox.checked) {
-                charPool += CHAR_SETS.numbers;
-                selectedChars.push(CHAR_SETS.numbers);
-            }
-            if (symbolsCheckbox.checked) {
-                charPool += CHAR_SETS.symbols;
-                selectedChars.push(CHAR_SETS.symbols);
-            }
-
-            if (selectedChars.length === 0) {
-                errorMessage.classList.add('show');
-                passwordDisplay.textContent = '请至少选择一种字符类型';
-                return;
-            }
-
-            errorMessage.classList.remove('show');
+            if (selectedChars.length === 0) { passwordDisplay.textContent = '请至少选择一种字符类型'; return; }
             let password = '';
-
-            selectedChars.forEach(chars => {
-                if (password.length < length) {
-                    password += chars[Math.floor(Math.random() * chars.length)];
-                }
-            });
-
-            while (password.length < length) {
-                password += charPool[Math.floor(Math.random() * charPool.length)];
-            }
-
+            selectedChars.forEach(chars => { if (password.length < length) password += chars[Math.floor(Math.random() * chars.length)]; });
+            while (password.length < length) password += charPool[Math.floor(Math.random() * charPool.length)];
             password = password.split('').sort(() => Math.random() - 0.5).join('');
             passwordDisplay.textContent = password;
             showToast('密码已生成');
@@ -744,22 +568,14 @@
 
         async function copyPassword() {
             const password = passwordDisplay.textContent;
-            if (password === '点击生成密码' || password === '请至少选择一种字符类型') {
-                return;
-            }
-
+            if (password === '点击生成密码' || password === '请至少选择一种字符类型') return;
             try {
                 await navigator.clipboard.writeText(password);
-                copyBtn.classList.add('btn-copied');
+                copyBtn.style.background = '#4caf50';
                 copyBtn.textContent = '已复制';
-                showToast('密码已复制到剪贴板');
-                setTimeout(() => {
-                    copyBtn.classList.remove('btn-copied');
-                    copyBtn.textContent = '复制密码';
-                }, 2000);
-            } catch (err) {
-                console.error('复制失败:', err);
-            }
+                showToast('已复制到剪贴板');
+                setTimeout(() => { copyBtn.style.background = '#f0f0f0'; copyBtn.textContent = '复制密码'; }, 2000);
+            } catch (err) { console.error('复制失败:', err); }
         }
 
         function showToast(message) {
@@ -773,15 +589,10 @@
                 const toolId = tab.dataset.tool;
                 navTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-
                 toolContents.forEach(content => {
                     content.classList.add('fade-out');
-                    setTimeout(() => {
-                        content.style.display = 'none';
-                        content.classList.remove('fade-out');
-                    }, 300);
+                    setTimeout(() => { content.style.display = 'none'; content.classList.remove('fade-out'); }, 300);
                 });
-
                 setTimeout(() => {
                     const activeTool = document.getElementById(`${toolId}-tool`);
                     activeTool.style.display = 'block';
@@ -796,30 +607,15 @@
         generatePassword();
 
         let calcDisplay = document.getElementById('calcDisplay');
-        let calcHistory = document.getElementById('calcHistory');
-
         function calcAppend(value) {
-            if (calcDisplay.textContent === '0' && value !== '.') {
-                calcDisplay.textContent = value;
-            } else {
-                calcDisplay.textContent += value;
-            }
+            if (calcDisplay.textContent === '0' && value !== '.') calcDisplay.textContent = value;
+            else calcDisplay.textContent += value;
         }
-
-        function calcClear() {
-            calcDisplay.textContent = '0';
-        }
-
+        function calcClear() { calcDisplay.textContent = '0'; }
         function calcCalculate() {
             try {
-                let expression = calcDisplay.textContent;
-                expression = expression.replace('×', '*').replace('÷', '/').replace('−', '-');
-                const result = eval(expression);
-                const historyItem = document.createElement('div');
-                historyItem.className = 'calculator-history-item';
-                historyItem.textContent = `${expression} = ${result}`;
-                calcHistory.insertBefore(historyItem, calcHistory.firstChild);
-                calcDisplay.textContent = result;
+                let expression = calcDisplay.textContent.replace('×', '*').replace('÷', '/').replace('−', '-');
+                calcDisplay.textContent = eval(expression);
                 showToast('计算完成');
             } catch (err) {
                 calcDisplay.textContent = '错误';
@@ -842,11 +638,9 @@
             todos.forEach((todo, index) => {
                 const li = document.createElement('li');
                 li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
-                li.innerHTML = `
-                    <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
+                li.innerHTML = `<input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
                     <span class="todo-text">${todo.text}</span>
-                    <button class="todo-delete" onclick="deleteTodo(${index})">删除</button>
-                `;
+                    <button class="todo-delete" onclick="deleteTodo(${index})">删除</button>`;
                 todoList.appendChild(li);
             });
             updateStats();
@@ -881,66 +675,34 @@
             const completed = todos.filter(t => t.completed).length;
             const pending = total - completed;
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-            animateNumber(statTotal, total);
-            animateNumber(statCompleted, completed);
-            animateNumber(statPending, pending);
-            animateNumber(piePercentage, percentage, true);
-
+            statTotal.textContent = total;
+            statCompleted.textContent = completed;
+            statPending.textContent = pending;
+            piePercentage.textContent = `${percentage}%`;
             pieChart.style.setProperty('--completed-deg', `${(completed / total) * 360}deg`);
         }
 
-        function animateNumber(element, target, isPercentage = false) {
-            const duration = 500;
-            const start = parseInt(element.textContent.replace('%', ''));
-            const startTime = performance.now();
-
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeOut = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(start + (target - start) * easeOut);
-                element.textContent = isPercentage ? `${current}%` : current;
-
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                }
-            }
-
-            requestAnimationFrame(update);
-        }
-
         function exportTodoJson() {
-            const dataStr = JSON.stringify(todos, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
+            const blob = new Blob([JSON.stringify(todos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'todos.json';
-            a.click();
+            a.href = url; a.download = 'todos.json'; a.click();
             URL.revokeObjectURL(url);
             showToast('已导出 JSON');
         }
 
         function exportTodoCsv() {
             let csv = 'ID,任务,状态\n';
-            todos.forEach(todo => {
-                csv += `${todo.id},"${todo.text}",${todo.completed ? '已完成' : '待处理'}\n`;
-            });
+            todos.forEach(todo => csv += `${todo.id},"${todo.text}",${todo.completed ? '已完成' : '待处理'}\n`);
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'todos.csv';
-            a.click();
+            a.href = url; a.download = 'todos.csv'; a.click();
             URL.revokeObjectURL(url);
             showToast('已导出 CSV');
         }
 
-        todoInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTodo();
-        });
-
+        todoInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTodo(); });
         renderTodos();
     </script>
 </body>

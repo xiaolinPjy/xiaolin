@@ -3,59 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多功能工作台</title>
+    <title>AI智能工作台</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFECB3 20%, #FFD54F 40%, #FFB74D 60%, #FF9800 80%, #FF8F00 100%);
             padding: 20px;
             position: relative;
             overflow-x: hidden;
         }
-        .bg-decoration {
+        .sun-container {
             position: fixed;
-            top: -50px;
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            filter: blur(60px);
-            animation: float 6s ease-in-out infinite;
+            top: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
             z-index: 1;
+            pointer-events: none;
         }
-        .bg-decoration-2 {
-            position: fixed;
-            bottom: -50px;
-            left: -50px;
-            width: 250px;
-            height: 250px;
-            background: rgba(240,147,251,0.15);
-            border-radius: 50%;
-            filter: blur(50px);
-            animation: float 8s ease-in-out infinite reverse;
-            z-index: 1;
-        }
-        .crystal-decoration {
-            position: fixed;
-            top: 20%;
-            right: 5%;
-            width: 60px;
+        .sun-core {
+            position: absolute;
+            top: 100px;
+            right: 100px;
+            width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(102,126,234,0.2));
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            animation: crystalFloat 10s ease-in-out infinite;
+            background: radial-gradient(circle, #FFFFFF 0%, #FFF9C4 30%, #FFEB3B 60%, #FFD54F 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 80px rgba(255,235,59,0.8),
+                0 0 120px rgba(255,213,79,0.6),
+                0 0 160px rgba(255,183,77,0.4),
+                0 0 200px rgba(255,152,0,0.2);
+            animation: sunPulse 4s ease-in-out infinite;
+        }
+        .sun-rays {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,235,59,0.3) 30%, rgba(255,213,79,0.1) 60%, transparent 80%);
+            border-radius: 50%;
+            animation: sunGlow 3s ease-in-out infinite;
+        }
+        .sun-ray {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 150px;
+            background: linear-gradient(to bottom, rgba(255,235,59,0.8), transparent);
+            transform-origin: center top;
+            animation: rayRotate 20s linear infinite;
+        }
+        .sun-ray:nth-child(1) { transform: translateX(-50%) rotate(0deg); }
+        .sun-ray:nth-child(2) { transform: translateX(-50%) rotate(45deg); }
+        .sun-ray:nth-child(3) { transform: translateX(-50%) rotate(90deg); }
+        .sun-ray:nth-child(4) { transform: translateX(-50%) rotate(135deg); }
+        .sun-ray:nth-child(5) { transform: translateX(-50%) rotate(180deg); }
+        .sun-ray:nth-child(6) { transform: translateX(-50%) rotate(225deg); }
+        .sun-ray:nth-child(7) { transform: translateX(-50%) rotate(270deg); }
+        .sun-ray:nth-child(8) { transform: translateX(-50%) rotate(315deg); }
+        
+        .cloud {
+            position: fixed;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50px;
             z-index: 1;
+            filter: blur(1px);
+            pointer-events: none;
         }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(20px, -20px) scale(1.1); }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50%;
         }
-        @keyframes crystalFloat {
+        .cloud-1 {
+            width: 150px;
+            height: 50px;
+            top: 12%;
+            left: 5%;
+            animation: cloudFloat1 25s ease-in-out infinite;
+        }
+        .cloud-1::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 25px;
+        }
+        .cloud-1::after {
+            width: 75px;
+            height: 75px;
+            top: -38px;
+            left: 70px;
+        }
+        .cloud-2 {
+            width: 120px;
+            height: 40px;
+            top: 20%;
+            right: 25%;
+            animation: cloudFloat2 30s ease-in-out infinite reverse;
+        }
+        .cloud-2::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 20px;
+        }
+        .cloud-2::after {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 55px;
+        }
+        .cloud-3 {
+            width: 100px;
+            height: 35px;
+            top: 8%;
+            left: 60%;
+            animation: cloudFloat3 35s ease-in-out infinite;
+            opacity: 0.8;
+        }
+        .cloud-3::before {
+            width: 45px;
+            height: 45px;
+            top: -22px;
+            left: 15px;
+        }
+        .cloud-3::after {
+            width: 55px;
+            height: 55px;
+            top: -28px;
+            left: 50px;
+        }
+
+        .ai-orb {
+            position: fixed;
+            bottom: 15%;
+            left: 8%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 50%;
+            animation: orbFloat 6s ease-in-out infinite;
+            z-index: 1;
+            box-shadow: 
+                0 0 40px rgba(102,126,234,0.6),
+                0 0 80px rgba(118,75,162,0.4),
+                inset 0 0 20px rgba(255,255,255,0.3);
+        }
+        .ai-orb::before {
+            content: 'AI';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .ai-orb::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: orbSparkle 2s ease-in-out infinite;
+        }
+
+        .ai-decoration {
+            position: fixed;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+        .ai-brain {
+            top: 15%;
+            right: 5%;
+            width: 150px;
+            height: 150px;
+            animation: floatBrain 8s ease-in-out infinite;
+        }
+        .ai-brain img {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(102,126,234,0.5));
+        }
+        .sun-flower {
+            bottom: 20%;
+            right: 8%;
+            width: 120px;
+            height: 120px;
+            animation: flowerSpin 15s linear infinite;
+        }
+        .sun-flower img {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 15px rgba(255,183,77,0.6));
+        }
+        .ai-sparkle {
+            top: 30%;
+            left: 3%;
+            width: 60px;
+            height: 60px;
+            animation: sparkleFloat 5s ease-in-out infinite;
+        }
+        .ai-sparkle img {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 10px rgba(255,215,0,0.7));
+        }
+
+        .neural-network {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            opacity: 0.08;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .neuron {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(102,126,234,0.8);
+            border-radius: 50%;
+            animation: neuronPulse 3s ease-in-out infinite;
+        }
+        .neuron:nth-child(1) { top: 10%; right: 10%; animation-delay: 0s; }
+        .neuron:nth-child(2) { top: 15%; right: 30%; animation-delay: 0.3s; }
+        .neuron:nth-child(3) { top: 8%; right: 50%; animation-delay: 0.6s; }
+        .neuron:nth-child(4) { top: 20%; right: 70%; animation-delay: 0.9s; }
+        .neuron:nth-child(5) { top: 12%; right: 85%; animation-delay: 1.2s; }
+        .neuron:nth-child(6) { top: 35%; right: 15%; animation-delay: 0.2s; }
+        .neuron:nth-child(7) { top: 40%; right: 35%; animation-delay: 0.5s; }
+        .neuron:nth-child(8) { top: 32%; right: 55%; animation-delay: 0.8s; }
+        .neuron:nth-child(9) { top: 45%; right: 75%; animation-delay: 1.1s; }
+        .neuron:nth-child(10) { top: 55%; right: 20%; animation-delay: 0.1s; }
+        .neuron:nth-child(11) { top: 60%; right: 45%; animation-delay: 0.4s; }
+        .neuron:nth-child(12) { top: 52%; right: 65%; animation-delay: 0.7s; }
+        .neuron:nth-child(13) { top: 70%; right: 30%; animation-delay: 0.3s; }
+        .neuron:nth-child(14) { top: 75%; right: 50%; animation-delay: 0.6s; }
+        .neuron:nth-child(15) { top: 68%; right: 70%; animation-delay: 0.9s; }
+
+        .hexagon-grid {
+            position: fixed;
+            top: 30%;
+            left: 0;
+            width: 200px;
+            height: 400px;
+            opacity: 0.06;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hexagon {
+            position: absolute;
+            width: 35px;
+            height: 40.4px;
+            background: transparent;
+            border: 2px solid rgba(255,152,0,0.5);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: hexPulse 4s ease-in-out infinite;
+        }
+        .hexagon:nth-child(1) { top: 5%; left: 10%; animation-delay: 0s; }
+        .hexagon:nth-child(2) { top: 20%; left: 35%; animation-delay: 0.5s; }
+        .hexagon:nth-child(3) { top: 35%; left: 15%; animation-delay: 1s; }
+        .hexagon:nth-child(4) { top: 50%; left: 40%; animation-delay: 1.5s; }
+        .hexagon:nth-child(5) { top: 65%; left: 20%; animation-delay: 2s; }
+        .hexagon:nth-child(6) { top: 80%; left: 45%; animation-delay: 2.5s; }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: particleFloat 10s ease-in-out infinite;
+        }
+        .particle:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; animation-duration: 12s; }
+        .particle:nth-child(2) { top: 20%; left: 80%; animation-delay: 2s; animation-duration: 15s; }
+        .particle:nth-child(3) { top: 60%; left: 15%; animation-delay: 4s; animation-duration: 11s; }
+        .particle:nth-child(4) { top: 70%; left: 75%; animation-delay: 1s; animation-duration: 13s; }
+        .particle:nth-child(5) { top: 40%; left: 90%; animation-delay: 3s; animation-duration: 14s; }
+        .particle:nth-child(6) { top: 80%; left: 5%; animation-delay: 5s; animation-duration: 10s; }
+
+        @keyframes sunPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes sunGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        @keyframes rayRotate {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+        @keyframes cloudFloat1 {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(40px); }
+        }
+        @keyframes cloudFloat2 {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-30px); }
+        }
+        @keyframes cloudFloat3 {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(25px); }
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(8deg); }
+        }
+        @keyframes orbSparkle {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+        @keyframes neuronPulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+        @keyframes hexPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.15); }
+        }
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0); opacity: 0.6; }
+            25% { transform: translate(20px, -30px); opacity: 0.8; }
+            50% { transform: translate(40px, -60px); opacity: 0.4; }
+            75% { transform: translate(20px, -30px); opacity: 0.7; }
+        }
+        @keyframes floatBrain {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes flowerSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes sparkleFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+            50% { transform: translateY(-15px) scale(1.2); opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shine {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
         }
         .workbench-container {
             max-width: 900px;
@@ -63,72 +378,136 @@
             position: relative;
             z-index: 10;
         }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideIn 0.6s ease-out;
+        }
+        .header h1 {
+            font-size: 42px;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #FFFFFF, #FFF9C4, #FFFFFF);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+        .header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 18px;
+            font-weight: 500;
+        }
         .nav-tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 30px;
             flex-wrap: wrap;
         }
         .nav-tab {
-            padding: 14px 30px;
+            padding: 16px 32px;
             border: none;
             border-radius: 50px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.25);
             color: white;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .nav-tab svg { width: 20px; height: 20px; }
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .nav-tab:hover::before { left: 100%; }
+        .nav-tab svg { 
+            width: 22px; 
+            height: 22px; 
+            transition: transform 0.3s;
+        }
         .nav-tab:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.35);
         }
         .nav-tab.active {
             background: white;
-            color: #667eea;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            color: #FF8C42;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
         }
+        .nav-tab.active svg { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
         .tool-content {
-            background: rgba(255,255,255,0.95);
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.2);
-            padding: 40px;
+            background: rgba(255,255,255,0.98);
+            border-radius: 28px;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.15);
+            padding: 45px;
             min-height: 500px;
-            transition: transform 0.5s ease, opacity 0.5s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #FFEB3B, #FF9800, #FF5722);
         }
         .tool-content.fade-out {
             opacity: 0;
-            transform: translateX(-20px);
+            transform: translateY(20px) scale(0.98);
         }
         .tool-content.fade-in {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0) scale(1);
         }
-        h1 {
+        .tool-content h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin-bottom: 35px;
+            font-size: 32px;
+            background: linear-gradient(135deg, #FF9800, #FF5722);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
         }
-        .form-group { margin-bottom: 25px; }
+        .tool-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 20px;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .form-group { margin-bottom: 28px; }
         .form-group label {
             display: block;
             color: #555;
-            margin-bottom: 10px;
-            font-weight: 500;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 15px;
         }
         .slider-container {
             display: flex;
@@ -137,108 +516,207 @@
         }
         input[type="range"] {
             flex: 1;
-            height: 8px;
-            border-radius: 5px;
-            background: #e0e0e0;
+            height: 10px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #FFEB3B, #FF9800);
             outline: none;
             -webkit-appearance: none;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: white;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 3px solid #FF9800;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { 
+            transform: scale(1.2); 
+            box-shadow: 0 6px 20px rgba(255,152,0,0.4);
         }
         .length-display {
-            min-width: 50px;
+            min-width: 60px;
             text-align: center;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
-            color: #667eea;
+            color: #FF9800;
+            background: linear-gradient(135deg, #FFF9C4, #FFECB3);
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .checkbox-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
-            padding: 10px 15px;
-            border-radius: 10px;
-            transition: background 0.2s;
+            padding: 14px 18px;
+            border-radius: 14px;
+            transition: all 0.3s;
+            background: #FAFAFA;
+            border: 2px solid transparent;
         }
-        .checkbox-item:hover { background: #f5f5f5; }
+        .checkbox-item:hover { 
+            background: #FFF9C4;
+            border-color: rgba(255,152,0,0.3);
+            transform: translateX(5px);
+        }
         .checkbox-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            accent-color: #667eea;
+            accent-color: #FF9800;
+        }
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #444;
         }
         .password-display {
-            background: linear-gradient(135deg, #f5f5f5, #eee);
-            border: 2px solid #e0e0e0;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFF9C4, #FFECB3);
+            border: 3px solid #FFE082;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
             word-break: break-all;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 22px;
+            font-size: 24px;
             color: #333;
-            min-height: 70px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        button {
-            flex: 1;
-            min-width: 120px;
-            padding: 15px 25px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
             transition: all 0.3s;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+        .password-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            animation: passwordShine 3s ease-in-out infinite;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        @keyframes passwordShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-        }
-        .btn-secondary:hover {
-            background: #e0e0e0;
-            transform: translateY(-2px);
+        .password-display:hover { 
+            border-color: #FF9800; 
+            box-shadow: 0 0 30px rgba(255,152,0,0.2);
         }
         .button-group {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
         }
+        button {
+            flex: 1;
+            min-width: 130px;
+            padding: 16px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,152,0,0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,152,0,0.5);
+        }
+        .btn-primary:active { transform: translateY(-1px); }
+        .btn-secondary {
+            background: #F5F5F5;
+            color: #555;
+            border: 2px solid #E0E0E0;
+        }
+        .btn-secondary:hover {
+            background: #FFF9C4;
+            border-color: #FFEB3B;
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #388E3C);
+            color: white;
+        }
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(76,175,80,0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #F44336, #D32F2F);
+            color: white;
+        }
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(244,67,54,0.4);
+        }
+        .btn-copied {
+            background: linear-gradient(135deg, #4CAF50, #388E3C) !important;
+        }
+        .error-message {
+            color: #E74C3C;
+            text-align: center;
+            margin-bottom: 18px;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.3s ease;
+            padding: 12px;
+            background: #FFF5F5;
+            border-radius: 10px;
+        }
+        .error-message.show { display: block; }
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(0,0,0,0.75));
             color: white;
-            padding: 15px 30px;
+            padding: 16px 32px;
             border-radius: 50px;
             font-size: 16px;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
         }
         .toast.show {
             opacity: 1;
@@ -246,154 +724,229 @@
         }
 
         .calculator-display {
-            background: linear-gradient(135deg, #2d3748, #1a202c);
+            background: linear-gradient(135deg, #2D3748, #1A202C);
             color: white;
-            padding: 30px;
-            border-radius: 16px;
-            margin-bottom: 20px;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 25px;
             text-align: right;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 36px;
-            min-height: 80px;
+            font-size: 40px;
+            min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            word-break: break-all;
+            box-shadow: inset 0 2px 15px rgba(0,0,0,0.4);
+            position: relative;
+        }
+        .calculator-display::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 10px;
+            height: 40px;
+            background: #FFEB3B;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
         .calculator-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 12px;
         }
         .calc-btn {
-            padding: 20px;
-            font-size: 20px;
+            padding: 22px;
+            font-size: 22px;
             font-weight: 600;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s;
-            background: #f5f5f5;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #F8F9FA;
             color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .calc-btn:hover {
-            background: #e0e0e0;
-            transform: scale(1.05);
+            background: #FFF9C4;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:active {
+            transform: translateY(0) scale(0.98);
         }
         .calc-btn.operator {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #FF9800, #FF5722);
             color: white;
+            box-shadow: 0 4px 15px rgba(255,152,0,0.4);
+        }
+        .calc-btn.operator:hover {
+            background: linear-gradient(135deg, #FFA726, #FF7043);
+            box-shadow: 0 8px 25px rgba(255,152,0,0.5);
+        }
+        .calc-btn.clear {
+            background: #E0E0E0;
+            color: #666;
         }
         .calc-btn.equals {
-            background: linear-gradient(135deg, #4caf50, #45a049);
+            background: linear-gradient(135deg, #4CAF50, #388E3C);
             color: white;
             grid-column: span 2;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.4);
         }
 
         .todo-input-area {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
         .todo-input {
             flex: 1;
-            min-width: 200px;
-            padding: 15px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            min-width: 220px;
+            padding: 16px 22px;
+            border: 2px solid #E0E0E0;
+            border-radius: 14px;
             font-size: 16px;
             outline: none;
+            transition: all 0.3s;
+            background: #FAFAFA;
         }
-        .todo-input:focus { border-color: #667eea; }
+        .todo-input:focus { 
+            border-color: #FF9800; 
+            background: white;
+            box-shadow: 0 0 20px rgba(255,152,0,0.15);
+        }
+        .todo-input::placeholder { color: #999; }
         .todo-list {
             list-style: none;
-            max-height: 300px;
+            max-height: 320px;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .todo-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .todo-list::-webkit-scrollbar-track {
+            background: #F5F5F5;
+            border-radius: 10px;
+        }
+        .todo-list::-webkit-scrollbar-thumb {
+            background: #FFEB3B;
+            border-radius: 10px;
         }
         .todo-item {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
+            padding: 18px 22px;
+            background: #FAFAFA;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideIn 0.4s ease-out;
+            border: 2px solid transparent;
         }
         .todo-item:hover {
-            background: #f0f0f0;
-            transform: translateX(5px);
+            background: #FFF9C4;
+            transform: translateX(8px);
+            border-color: rgba(255,152,0,0.3);
         }
         .todo-item.completed {
-            opacity: 0.6;
+            opacity: 0.65;
+            background: #F1F8E9;
         }
         .todo-item.completed .todo-text {
             text-decoration: line-through;
-            color: #999;
+            color: #888;
         }
         .todo-checkbox {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             cursor: pointer;
-            accent-color: #667eea;
+            accent-color: #4CAF50;
         }
         .todo-text {
             flex: 1;
             font-size: 16px;
             color: #333;
+            font-weight: 500;
         }
         .todo-delete {
-            padding: 8px 12px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 8px;
-            background: #ffebee;
-            color: #e53935;
+            border-radius: 10px;
+            background: #FFF5F5;
+            color: #E53935;
             cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .todo-delete:hover {
+            background: #FFEBEE;
+            transform: scale(1.05);
         }
         .todo-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 18px;
+            margin-bottom: 25px;
         }
         .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #FF9800, #FF5722);
             color: white;
-            padding: 20px;
-            border-radius: 16px;
+            padding: 24px;
+            border-radius: 20px;
             text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(255,152,0,0.3);
+        }
+        .stat-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 40px rgba(255,152,0,0.4);
         }
         .stat-value {
-            font-size: 32px;
+            font-size: 40px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .stat-label { font-size: 14px; opacity: 0.9; }
+        .stat-label { 
+            font-size: 14px; 
+            opacity: 0.9;
+            font-weight: 500;
+        }
         .chart-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .pie-chart {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
             background: conic-gradient(
-                #4caf50 0deg var(--completed-deg, 0deg),
-                #ff9800 var(--completed-deg, 0deg) 360deg
+                #4CAF50 0deg var(--completed-deg, 0deg),
+                #FFEB3B var(--completed-deg, 0deg) 360deg
             );
             position: relative;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
         }
         .pie-chart::before {
             content: '';
             position: absolute;
-            top: 20%;
-            left: 20%;
-            right: 20%;
-            bottom: 20%;
+            top: 15%;
+            left: 15%;
+            right: 15%;
+            bottom: 15%;
             background: white;
             border-radius: 50%;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
         }
         .pie-center {
             position: absolute;
@@ -404,38 +957,116 @@
             z-index: 1;
         }
         .pie-percentage {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
-            color: #667eea;
+            color: #FF9800;
+        }
+        .pie-label { 
+            font-size: 13px; 
+            color: #666;
+            font-weight: 500;
         }
         .export-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         @media (max-width: 600px) {
-            .tool-content { padding: 25px; }
-            h1 { font-size: 24px; }
-            .nav-tab { padding: 12px 20px; font-size: 14px; }
+            .tool-content { padding: 28px; }
+            .tool-content h1 { font-size: 26px; }
+            .nav-tab { padding: 14px 22px; font-size: 14px; }
+            .calc-btn { padding: 18px; font-size: 20px; }
             .todo-stats { grid-template-columns: repeat(1, 1fr); }
+            .button-group { flex-direction: column; }
+            .sun-core { width: 60px; height: 60px; top: 20px; right: 20px; }
+            .ai-decoration { transform: scale(0.7); }
         }
     </style>
 </head>
 <body>
-    <div class="bg-decoration"></div>
-    <div class="bg-decoration-2"></div>
-    <div class="crystal-decoration"></div>
+    <div class="sun-container">
+        <div class="sun-rays">
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+            <div class="sun-ray"></div>
+        </div>
+        <div class="sun-core"></div>
+    </div>
+    
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    
+    <div class="ai-orb"></div>
+    
+    <div class="ai-decoration ai-brain">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=A%20futuristic%20AI%20brain%20made%20of%20golden%20sunlight%20and%20blue%20neural%20networks,%20glowing%20with%20warm%20sunny%20energy,%20digital%20art%20style,%20transparent%20background,%20high%20quality&image_size=square" alt="AI Brain">
+    </div>
+    
+    <div class="ai-decoration sun-flower">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=A%20beautiful%20sun%20flower%20made%20of%20golden%20light%20rays,%20bright%20yellow%20petals%20radiating%20warmth,%20digital%20art%20style,%20transparent%20background,%20high%20quality&image_size=square" alt="Sun Flower">
+    </div>
+    
+    <div class="ai-decoration ai-sparkle">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=A%20magical%20sparkle%20star%20made%20of%20sunlight%20and%20energy,%20golden%20glitter%20particles,%20warm%20glowing%20effect,%20digital%20art%20style,%20transparent%20background,%20high%20quality&image_size=square" alt="AI Sparkle">
+    </div>
+
+    <div class="neural-network">
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+        <div class="neuron"></div>
+    </div>
+
+    <div class="hexagon-grid">
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+        <div class="hexagon"></div>
+    </div>
+
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
     <div class="workbench-container">
+        <div class="header">
+            <h1>☀️ AI智能工作台</h1>
+            <p>✨ 智能工具，让工作更高效 ✨</p>
+        </div>
+
         <div class="nav-tabs">
             <button class="nav-tab active" data-tool="password">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0110 0v4"></path>
                 </svg>
-                密码生成器
+                🔐 密码生成器
             </button>
             <button class="nav-tab" data-tool="calculator">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -444,18 +1075,19 @@
                     <path d="M8 12h8"></path>
                     <path d="M8 8h8"></path>
                 </svg>
-                计算器
+                🧮 计算器
             </button>
             <button class="nav-tab" data-tool="todo">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                待办事项
+                ✅ 待办事项
             </button>
         </div>
 
         <div class="tool-content" id="password-tool">
+            <span class="tool-icon">🔐</span>
             <h1>密码生成器</h1>
             <div class="form-group">
                 <label for="lengthSlider">密码长度: <span id="lengthValue" class="length-display">16</span> 位</label>
@@ -474,16 +1106,17 @@
             </div>
             <div class="password-display" id="passwordDisplay">点击生成密码</div>
             <div class="button-group">
-                <button class="btn-primary" id="generateBtn">生成密码</button>
-                <button class="btn-secondary" id="copyBtn">复制密码</button>
+                <button class="btn-primary" id="generateBtn">🎲 生成密码</button>
+                <button class="btn-secondary" id="copyBtn">📋 复制密码</button>
             </div>
         </div>
 
         <div class="tool-content" id="calculator-tool" style="display: none;">
+            <span class="tool-icon">🧮</span>
             <h1>计算器</h1>
             <div class="calculator-display" id="calcDisplay">0</div>
             <div class="calculator-buttons">
-                <button class="calc-btn" onclick="calcClear()">C</button>
+                <button class="calc-btn clear" onclick="calcClear()">C</button>
                 <button class="calc-btn" onclick="calcAppend('(')">(</button>
                 <button class="calc-btn" onclick="calcAppend(')')">)</button>
                 <button class="calc-btn operator" onclick="calcAppend('/')">÷</button>
@@ -506,6 +1139,7 @@
         </div>
 
         <div class="tool-content" id="todo-tool" style="display: none;">
+            <span class="tool-icon">✅</span>
             <h1>待办事项</h1>
             <div class="todo-stats">
                 <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">总任务</div></div>
@@ -514,17 +1148,17 @@
             </div>
             <div class="chart-container">
                 <div class="pie-chart" id="pieChart">
-                    <div class="pie-center"><div class="pie-percentage" id="piePercentage">0%</div><div style="font-size:12px;color:#666">完成率</div></div>
+                    <div class="pie-center"><div class="pie-percentage" id="piePercentage">0%</div><div class="pie-label">完成率</div></div>
                 </div>
             </div>
             <div class="todo-input-area">
                 <input type="text" class="todo-input" id="todoInput" placeholder="添加新任务...">
-                <button class="btn-primary" onclick="addTodo()">添加</button>
+                <button class="btn-primary" onclick="addTodo()">➕ 添加</button>
             </div>
             <ul class="todo-list" id="todoList"></ul>
             <div class="export-buttons">
-                <button class="btn-secondary" onclick="exportTodoJson()">导出 JSON</button>
-                <button class="btn-secondary" onclick="exportTodoCsv()">导出 CSV</button>
+                <button class="btn-secondary" onclick="exportTodoJson()">📄 导出 JSON</button>
+                <button class="btn-secondary" onclick="exportTodoCsv()">📊 导出 CSV</button>
             </div>
         </div>
     </div>
@@ -563,7 +1197,7 @@
             while (password.length < length) password += charPool[Math.floor(Math.random() * charPool.length)];
             password = password.split('').sort(() => Math.random() - 0.5).join('');
             passwordDisplay.textContent = password;
-            showToast('密码已生成');
+            showToast('🔐 密码已生成');
         }
 
         async function copyPassword() {
@@ -571,10 +1205,10 @@
             if (password === '点击生成密码' || password === '请至少选择一种字符类型') return;
             try {
                 await navigator.clipboard.writeText(password);
-                copyBtn.style.background = '#4caf50';
-                copyBtn.textContent = '已复制';
-                showToast('已复制到剪贴板');
-                setTimeout(() => { copyBtn.style.background = '#f0f0f0'; copyBtn.textContent = '复制密码'; }, 2000);
+                copyBtn.classList.add('btn-copied');
+                copyBtn.textContent = '✓ 已复制';
+                showToast('📋 已复制到剪贴板');
+                setTimeout(() => { copyBtn.classList.remove('btn-copied'); copyBtn.textContent = '📋 复制密码'; }, 2000);
             } catch (err) { console.error('复制失败:', err); }
         }
 
@@ -616,10 +1250,10 @@
             try {
                 let expression = calcDisplay.textContent.replace('×', '*').replace('÷', '/').replace('−', '-');
                 calcDisplay.textContent = eval(expression);
-                showToast('计算完成');
+                showToast('🧮 计算完成');
             } catch (err) {
                 calcDisplay.textContent = '错误';
-                showToast('表达式错误');
+                showToast('❌ 表达式错误');
                 setTimeout(() => calcDisplay.textContent = '0', 2000);
             }
         }
@@ -653,7 +1287,7 @@
                 localStorage.setItem('todos', JSON.stringify(todos));
                 todoInput.value = '';
                 renderTodos();
-                showToast('任务已添加');
+                showToast('✅ 任务已添加');
             }
         }
 
@@ -661,13 +1295,14 @@
             todos[index].completed = !todos[index].completed;
             localStorage.setItem('todos', JSON.stringify(todos));
             renderTodos();
+            showToast(todos[index].completed ? '✓ 已完成' : '🔄 标记为待处理');
         }
 
         function deleteTodo(index) {
             todos.splice(index, 1);
             localStorage.setItem('todos', JSON.stringify(todos));
             renderTodos();
-            showToast('任务已删除');
+            showToast('🗑️ 任务已删除');
         }
 
         function updateStats() {
@@ -688,7 +1323,7 @@
             const a = document.createElement('a');
             a.href = url; a.download = 'todos.json'; a.click();
             URL.revokeObjectURL(url);
-            showToast('已导出 JSON');
+            showToast('📄 已导出 JSON');
         }
 
         function exportTodoCsv() {
@@ -699,7 +1334,7 @@
             const a = document.createElement('a');
             a.href = url; a.download = 'todos.csv'; a.click();
             URL.revokeObjectURL(url);
-            showToast('已导出 CSV');
+            showToast('📊 已导出 CSV');
         }
 
         todoInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTodo(); });
